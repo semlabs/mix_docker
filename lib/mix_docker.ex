@@ -17,6 +17,9 @@ defmodule MixDocker do
   end
 
   def build(args) do
+    {opts, args} = extract_opts(args)
+    File.write!("VERSION", make_image_tag(opts[:tag]))
+
     with_dockerfile @dockerfile_build, fn ->
       docker :build, @dockerfile_build, image(:build), args
     end
